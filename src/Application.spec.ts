@@ -1,11 +1,10 @@
 import * as supertest from 'supertest'
-import app from './App'
+import app from './Application'
 
-describe('App!', () => {
+describe('Application!', () => {
   it('works', () =>
     supertest(app)
       .get('/')
       .expect('Content-Type', /json/)
-      .expect(200)
-  )
+      .expect(200))
 })

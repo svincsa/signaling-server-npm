@@ -1,6 +1,6 @@
-import app from './App'
+import app from './Application'
 
-const port = process.env.PORT || 3000
+const port:Number = 3000
 
 app.listen(port, (err) => {
   if (err) {
