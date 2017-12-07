@@ -1,11 +1,17 @@
-import app from './Application'
+import Application from './Application'
+import TestModule from './TestModule'
 
 const port:Number = 3000
 
-app.listen(port, (err) => {
-  if (err) {
-    return console.log(err)
-  }
+Application.registRestAPI('testpage(par1, par2)', /(testpage)\/(\?(.+))?/, (req, res, next) => {
+  console.info(req.query);
 
-  return console.log(`server is listening on ${port}`)
+  res.send(200, {
+    errno: 200, 
+    message: 'Test Rest API (testpage) is ok.'			
+  });
+
+  next();
 })
+
+console.log(TestModule.test())

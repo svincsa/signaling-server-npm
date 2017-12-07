@@ -5,25 +5,26 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch & nodemon dist",
+    "start": "concurrently \"tsc --watch\" \"nodemon --watch dist dist\"",
     "test": "tsc && mocha dist/**/*.spec.js",
-    "lint": "eslint src --ext ts",
-    "tsc": "tsc"
+    "lint": "eslint src --ext ts"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/svincsa/signaling-server-npm.git"
+    "url": "git://github.com/svincsa/signaling-server-npm.git" 
   },
-  "keywords": [],
+  "keywords": [], 
   "author": "",
   "license": "ISC",
   "dependencies": {
     "nodemon": "1.11.0",
-    "restify": "^6.3.4"
+    "restify": "^6.3.4",
+    "restify-plugins": "^1.6.0"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.44",
     "@types/node": "^8.0.55",
+    "concurrently": "^3.5.1",
     "eslint": "^4.12.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
@@ -31,7 +32,7 @@
     "mocha": "^4.0.1",
     "supertest": "^3.0.0",
     "tsc": "^1.20150623.0",
-    "typescript": "^2.6.2",
+    "typescript": "^2.4.2",
     "typescript-eslint-parser": "^9.0.1"
   }
 }
