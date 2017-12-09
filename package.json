@@ -4,16 +4,16 @@
   "description": "precedence project setup",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --watch",
     "start": "concurrently \"tsc --watch\" \"nodemon --watch dist dist\"",
     "test": "tsc && mocha dist/**/*.spec.js",
     "lint": "eslint src --ext ts"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/svincsa/signaling-server-npm.git" 
+    "url": "git://github.com/svincsa/signaling-server-npm.git"
   },
-  "keywords": [], 
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
