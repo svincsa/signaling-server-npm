@@ -1,4 +1,6 @@
 import * as restify from 'restify'
+import * as ws from 'ws'
+import * as http from 'http'
 
 import Client from './Client'
 import ServerAppInterface from './ServerAppInterface'
@@ -7,32 +9,30 @@ import ServerAppInterface from './ServerAppInterface'
  * 
  */
 class Server {
-    /**
-     * 
-     */
+    /** */
     private socket:any
-    /**
-     * 
-     */
+    /** */
+    private rest:any
+    /** */
     private serverInterface:ServerAppInterface
-    /**
-     * 
-     */
+    /** */
     private apps:Object = {}
-    /**
-     * 
-     */
+    /** */
     private insts:Object = {}
-    /**
-     * 
-     */
+    /** */
     private restCalls:Object = {}
-    /**
-     * 
-     */
+    /** */
     private socketCalls:Object = {}
 
-    constructor (private name:string, private port:number){
+    /**
+     * 
+     * @param name 
+     * @param port 
+     */
+    constructor (
+        private name:string, 
+        private port:number
+    ){
         this.setup()
     }
 
@@ -122,17 +122,21 @@ class Server {
      * 
      */
     private setup(){
+        this.setupRest();
+        this.setupSocket();
+    }
+    private setupRest(){
         var self:Server = this;
 
-        this.socket = restify.createServer({name: this.name})
-        this.socket.use(restify.plugins.queryParser());
+        this.rest = restify.createServer({name: this.name})
+        this.rest.use(restify.plugins.queryParser());
         /**
          * map /<APP NAME>/<INSTANCE NAME>/<METHOD>/[?PARAMS]
          */
-        this.socket.get(/([^\/]+)\/([^\/]+)\/([^\/])+\/(\?.+)?/, function (req, res, next){
+        this.rest.get(/([^\/]+)\/([^\/]+)\/([^\/])+\/(\?.+)?/, function (req, res, next){
             self.restApiParser(req, res, next);
         })
-        this.socket.listen(this.port, (err) => {
+        this.rest.listen(this.port, (err) => {
             if (err) {
                 return console.log(err)
             }
@@ -140,6 +144,23 @@ class Server {
                 `server ${self.name} is listening on ${self.port}`
             )
         })
+    }
+    private setupSocket(){
+        this.socket = new ws.Server({ 
+            server: this.rest.server
+            //port: 3001 
+        }, (a, b, c) => {
+            console.info('socket start');
+        });
+
+        this.socket.on('connection', (ws) => {
+
+            ws.on('message', (message) => {
+              console.log('received: %s', message);
+            });
+           
+            ws.send('something');
+        });
     }
     /**
      * 
